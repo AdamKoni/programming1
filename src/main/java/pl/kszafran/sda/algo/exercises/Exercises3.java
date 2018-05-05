@@ -14,7 +14,12 @@ public class Exercises3 {
      * Zwraca -1 jeśli element nie znajduje się w tablicy.
      */
     public int linearSearch(int[] array, int value) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        for (int i = 0; i < array.length; i++) {
+            if(array[i] == value) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**

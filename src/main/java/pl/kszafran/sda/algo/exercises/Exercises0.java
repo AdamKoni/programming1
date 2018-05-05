@@ -1,6 +1,11 @@
 package pl.kszafran.sda.algo.exercises;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Zaimplementuj poniższe metody z użyciem wyrażeń lambda i/lub klas Stream oraz Optional.
@@ -12,21 +17,28 @@ public class Exercises0 {
      * określony znak znajduje się w podanym Stringu.
      */
     public OptionalInt indexOf(String string, char c) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        int index = string.indexOf(c);
+        if(index == -1){
+            return OptionalInt.empty();
+        } else
+            return OptionalInt.of(index);
+
     }
 
     /**
      * Znajduje autora książki o podanym tytule.
      */
     public Optional<String> findAuthorByTitle(BookRepository repository, String title) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return repository.findByTitle(title).map(name -> name.author);
     }
 
     /**
      * Funkcja zwraca ilość liczb dodatnich w podanej liście.
      */
     public long numPositive(List<Integer> numbers) {
-        throw new UnsupportedOperationException("Not implemented yet");
+       return numbers.stream()
+                .filter(n -> n > 0)
+                .count();
     }
 
     /**
@@ -34,7 +46,11 @@ public class Exercises0 {
      * Wynikowa lista jest posortowana alfabetycznie oraz nie zawiera duplikatów.
      */
     public List<String> authorsOf(Book... books) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return Arrays.stream(books)
+                .sorted()
+                .distinct()
+                .map(e -> e.author)
+                .collect(toList());
     }
 
     /**
@@ -43,7 +59,10 @@ public class Exercises0 {
      * Zwrócone wyrazy zapisane są małymi literami.
      */
     public Set<String> keywordsIn(Book... books) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return Arrays.stream(books)
+                .flatMap(e->Arrays.stream(e.title.split("\\W+")))
+                .map(String::toLowerCase)
+                .collect(toSet());
     }
 
     /**

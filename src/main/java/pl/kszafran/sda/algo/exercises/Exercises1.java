@@ -11,7 +11,10 @@ public class Exercises1 {
      * Oblicza silnię argumentu n. Zwraca 1 dla n = 0.
      */
     public int factorial(int n) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        if (n == 0) {
+            return 1;
+        } else
+            return n * factorial(n - 1);
     }
 
     /**
@@ -19,21 +22,34 @@ public class Exercises1 {
      * Uwaga: aby policzyć sumę rekurencyjnie, potrzebna będzie dodatkowa metoda.
      */
     public int sum(int[] numbers) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return sum2(numbers, 0);
     }
+
+    private int sum2(int[] array, int index) {
+        if (index == array.length) {
+            return 0;
+        } else {
+            return array[index] + sum2(array, index + 1);
+        }
+    }
+
 
     /**
      * Odwraca podany napis, np. dla "test" zwraca "tset".
      */
     public String reverse(String text) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        if (text.isEmpty()) {
+            return "";
+        }
+        int index = text.length() - 1;
+        return text.substring(index) + reverse(text.substring(0, index));
     }
 
     /**
      * Oblicza NWW (najmniejszą wspólną wielokrotnosć) podanych argumentów.
-     *
+     * <p>
      * (po angielsku LCM - Least Common Multiple)
-     *
+     * <p>
      * Podpowiedź:
      * NWW(a, b) = a * b / NWD(a, b)
      * NWW(a1, a2, ..., an) = NWW(a1, NWW(a2, a3, ..., an))
