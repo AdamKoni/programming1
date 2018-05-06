@@ -1,7 +1,8 @@
 package pl.kszafran.sda.algo.exercises;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import org.w3c.dom.Node;
+
+import java.util.*;
 
 /**
  * Zaimplementuj poniższe metody operujące na liście wiązanej jednokierunkowej.
@@ -116,57 +117,116 @@ public class Exercises4 {
         private Node<T> head;
 
         public SdaLinkedList(T[] elements) {
-            throw new UnsupportedOperationException("Not implemented yet");
+            for (int i = elements.length - 1; i >= 0; i--) {
+                head = new Node<>(elements[i], head);
+            }
         }
 
         @Override
         public boolean isEmpty() {
-            throw new UnsupportedOperationException("Not implemented yet");
+            if (head == null) {
+                return true;
+            }
+            return false;
         }
 
         @Override
         public int size() {
-            throw new UnsupportedOperationException("Not implemented yet");
+            int counter = 0;
+            Node<T> item = head;
+            while (item != null) {
+                counter++;
+                item = item.next;
+            }
+            return counter;
         }
 
         @Override
         public T getFirst() {
-            throw new UnsupportedOperationException("Not implemented yet");
+            Node<T> item = head;
+            if (item != null) {
+                return head.element;
+            }
+            throw new NoSuchElementException("No elements");
         }
 
         @Override
         public T getLast() {
-            throw new UnsupportedOperationException("Not implemented yet");
+            Node<T> item = head;
+            if (item != null) {
+                while (item.next != null) {
+                    item = item.next;
+                }
+                return item.element;
+            }
+            throw new NoSuchElementException("No elements");
         }
 
         @Override
         public T get(int index) {
-            throw new UnsupportedOperationException("Not implemented yet");
+            Node<T> item = head;
+            int i = 0;
+            if (index >= 0) {
+                while (i != index) {
+                    if (item.next != null) {
+                        item = item.next;
+                        i++;
+                    } else {
+                        throw new IndexOutOfBoundsException("Index out of bounds");
+                    }
+                }
+                return item.element;
+            }
+            throw new IndexOutOfBoundsException("Index out of bounds");
         }
 
         @Override
         public void clear() {
-            throw new UnsupportedOperationException("Not implemented yet");
+            head = null;
         }
 
         @Override
         public void addFirst(T element) {
-            throw new UnsupportedOperationException("Not implemented yet");
+            head = new Node<>(element, head);
         }
 
         @Override
         public void addLast(T element) {
-            throw new UnsupportedOperationException("Not implemented yet");
+            if (isEmpty()) {
+                addFirst(element);
+            } else {
+                Node<T> item = head;
+                while (item.next != null) {
+                    item = item.next;
+                }
+                item.next = new Node<>(element, null);
+            }
         }
 
         @Override
         public void removeFirst() {
-            throw new UnsupportedOperationException("Not implemented yet");
+            if (isEmpty()) {
+                throw new NoSuchElementException("No list");
+            } else {
+                head = head.next;
+            }
         }
 
         @Override
         public void removeLast() {
-            throw new UnsupportedOperationException("Not implemented yet");
+            if (isEmpty()) {
+                throw new NoSuchElementException("No list");
+            } else if (head.next == null) {
+                clear();
+            } else {
+                Node<T> item = head;
+                Node<T> item2 = null;
+                while (item.next != null) {
+                    item2 = item;
+                    item = item.next;
+                }
+                item2.next = null;
+            }
         }
 
         ////////////////////////////////////////////
@@ -197,8 +257,8 @@ public class Exercises4 {
 
         private static class Node<T> {
 
-            private final T element;
-            private final Node<T> next;
+            private T element;
+            private Node<T> next;
 
             private Node(T element, Node<T> next) {
                 this.element = element;
