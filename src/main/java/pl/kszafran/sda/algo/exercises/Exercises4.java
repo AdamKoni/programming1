@@ -219,13 +219,13 @@ public class Exercises4 {
             } else if (head.next == null) {
                 clear();
             } else {
-                Node<T> item = head;
-                Node<T> item2 = null;
-                while (item.next != null) {
-                    item2 = item;
-                    item = item.next;
+                Node<T> last = head;
+                Node<T> secondToLast = null;
+                while (last.next != null) {
+                    secondToLast = last;
+                    last = last.next;
                 }
-                item2.next = null;
+                secondToLast.next = null;
             }
         }
 
@@ -242,18 +242,47 @@ public class Exercises4 {
 
         @Override
         public void setAt(int index, T element) {
-            throw new UnsupportedOperationException("Not implemented yet");
+            nodeAt(index).element = element;
         }
 
         @Override
         public void addAt(int index, T element) {
-            throw new UnsupportedOperationException("Not implemented yet");
+            if (index == 0) {
+                addFirst(element);
+            } else {
+                Node<T> preIndex = nodeAt(index - 1);
+                preIndex.next = new Node<>(element, preIndex.next);
+            }
         }
 
         @Override
         public void removeAt(int index) {
-            throw new UnsupportedOperationException("Not implemented yet");
+            if (isEmpty()) {
+                throw new IndexOutOfBoundsException("Index out of bounds");
+            } else if(index == 0) {
+                removeFirst();
+            } else {
+                Node<T> preNode = nodeAt(index - 1);
+                preNode.next = preNode.next.next;
+            }
         }
+
+        private Node<T> nodeAt(int index) {
+            if(index < 0) {
+                throw new IndexOutOfBoundsException("Index out of bounds");
+            } else if (isEmpty()) {
+                throw new IndexOutOfBoundsException("Index out of bounds");
+            }
+            Node<T> item = head;
+            for (int i = 0; i < index; i++) {
+                item = item.next;
+                if(item == null) {
+                    throw new IndexOutOfBoundsException("Index out of bounds");
+                }
+            }
+            return item;
+        }
+
 
         private static class Node<T> {
 
