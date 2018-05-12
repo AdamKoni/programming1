@@ -1,8 +1,6 @@
 package pl.kszafran.sda.algo.exercises;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class Exercises5 {
 
@@ -146,54 +144,77 @@ public class Exercises5 {
         void enqueue(T element);
     }
 
+    /**
+     * Tworzy nową kolejkę o stałej pojemności 'capacity', zawierającą podane elementy.
+     * <p>
+     * Uwaga: kolejkę należy zaimplementować w oparciu o bufor cykliczny.
+     * Opis do znalezienia na Wikipedii: https://pl.wikipedia.org/wiki/Bufor_cykliczny
+     * <p>
+     * Uwaga: najłatwiej będzie implementować metody w takiej kolejności jak są zadeklarowane.
+     * <p>
+     * Podpowiedź: są dwa podstawowe sposoby na zaimplementowanie bufora cyklicznego:
+     * - przechowywać dwa wskaźniki: na początek i na konieć kolejki
+     * - przechowywać wskaźnik na początek kolejki oraz ilość elementów (wg mnie prostszy sposób)
+     * Dla zainteresowanych tematem: https://www.snellman.net/blog/archive/2016-12-13-ring-buffers/
+     *
+     * @throws IllegalArgumentException jeśli ilość elementów przekracza pojemność
+     */
     private static class SdaCircularBuffer<T> implements SdaQueue<T> {
-        /**
-         * Tworzy nową kolejkę o stałej pojemności 'capacity', zawierającą podane elementy.
-         * <p>
-         * Uwaga: kolejkę należy zaimplementować w oparciu o bufor cykliczny.
-         * Opis do znalezienia na Wikipedii: https://pl.wikipedia.org/wiki/Bufor_cykliczny
-         * <p>
-         * Uwaga: najłatwiej będzie implementować metody w takiej kolejności jak są zadeklarowane.
-         * <p>
-         * Podpowiedź: są dwa podstawowe sposoby na zaimplementowanie bufora cyklicznego:
-         * - przechowywać dwa wskaźniki: na początek i na konieć kolejki
-         * - przechowywać wskaźnik na początek kolejki oraz ilość elementów (wg mnie prostszy sposób)
-         * Dla zainteresowanych tematem: https://www.snellman.net/blog/archive/2016-12-13-ring-buffers/
-         *
-         * @throws IllegalArgumentException jeśli ilość elementów przekracza pojemność
-         */
+
+        private final T[] elements;
+        private int elementsNumber;
+        private int queueBeginning;
+
         public SdaCircularBuffer(int capacity, T[] elements) {
-            throw new UnsupportedOperationException("Not implemented yet");
+            if (elements.length > capacity) {
+                throw new IllegalArgumentException("Too many elements");
+            }
+            this.elements = Arrays.copyOf(elements, capacity);
+            this.elementsNumber = elements.length;
         }
 
         @Override
         public boolean isEmpty() {
-            throw new UnsupportedOperationException("Not implemented yet");
+            return elementsNumber == 0;
         }
 
         @Override
         public boolean isFull() {
-            throw new UnsupportedOperationException("Not implemented yet");
+            return elements.length == elementsNumber;
         }
 
         @Override
         public int size() {
-            throw new UnsupportedOperationException("Not implemented yet");
+            return elementsNumber;
         }
 
         @Override
         public T peek() {
-            throw new UnsupportedOperationException("Not implemented yet");
+            if (isEmpty()) {
+                throw new NoSuchElementException("There's nobody here but us chickens");
+            }
+            return elements[queueBeginning];
         }
 
         @Override
         public T dequeue() {
-            throw new UnsupportedOperationException("Not implemented yet");
+            if (isEmpty()) {
+                throw new NoSuchElementException("There's nobody here but us chickens");
+            }
+            T firstElement = elements[queueBeginning];
+            elements[queueBeginning] = null;
+            queueBeginning = (queueBeginning + 1) % elements.length;
+            elementsNumber = elementsNumber - 1;
+            return firstElement;
         }
 
         @Override
         public void enqueue(T element) {
-            throw new UnsupportedOperationException("Not implemented yet");
+            if (isFull()) {
+                throw new IllegalStateException("Can't eat anything else, we're already full!");
+            }
+            elements[((queueBeginning + elementsNumber) % elements.length)] = element;
+            elementsNumber++;
         }
     }
 
@@ -212,7 +233,21 @@ public class Exercises5 {
      * Podpowiedź: pytać o podpowiedzi :)
      */
     public <T> void reverseStack(Deque<T> stack) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        if (!stack.isEmpty()) {
+            T temp = stack.pop();
+            reverseStack(stack);
+            reverseOrder(stack, temp);
+        }
+    }
+
+    private <T> void reverseOrder(Deque<T> stack, T temp) {
+        if (stack.isEmpty()) {
+            stack.push(temp);
+        } else {
+            T temp2 = stack.pop();
+            reverseOrder(stack,temp);
+            stack.push(temp2);
+        }
     }
 
     /**
@@ -241,6 +276,8 @@ public class Exercises5 {
      * @throws IllegalArgumentException jeśli wyrażenie jest niepoprawne
      */
     public int evaluate(String expression) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        Deque<String> evaluateArray = new ArrayDeque<>();
+        expression.split("\\W");
+        
     }
 }
