@@ -276,8 +276,8 @@ public class Exercises5 {
      * @throws IllegalArgumentException jeśli wyrażenie jest niepoprawne
      */
     public int evaluate(String expression) {
-        Deque<String> evaluateArray = new ArrayDeque<>();
-        expression.split("\\W");
-        
+//        Deque<String> evaluateArray = new ArrayDeque<>();
+//        expression.split("\\W");
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 }
