@@ -14,7 +14,13 @@ public class Exercises7 {
      * ma wartość większą lub równą wartości swoich dzieci.
      */
     public boolean isHeap(int[] array) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        for (int i = 0; i < array.length; i++) {
+            if ((2 * i + 1 < array.length) && (array[i] < array[(2 * i + 1)]) ||
+                    ((2 * i + 2 < array.length) && array[i] < array[(2 * i + 2)])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public <T extends Comparable<T>> SdaHeap<T> createHeap(T[] heap, int capacity) {
@@ -59,14 +65,67 @@ public class Exercises7 {
             this.size = heap.length;
         }
 
+//i = A.length-1
+//
+//while (i > 1 && A[parent(i)] < A[i])
+//
+//  swap(A[i], A[parent(i)])
         @Override
         public void push(T element) {
-            throw new UnsupportedOperationException("Not implemented yet");
+            if (heap.length == size) {
+                throw new IllegalStateException("Can't eat anymore, I'm full!");
+            }
+            heap[size] = element;
+            size++;
+            int i = size - 1;
+            while (i > 0 && heap[(i - 1) / 2].compareTo(heap[i]) < 0) {
+                T temp = heap[(i - 1) / 2];
+                heap[(i - 1) / 2] = heap[i];
+                heap[i] = temp;
+                i = ((i - 1) / 2);
+            }
         }
 
+//        take out A[1]
+//
+//A[1] = A[A.length-1]
+//
+//i = 1; A.length--
+//
+//while (i < A.length)
+//
+//  if A[i] < (L = the larger of i's children)
+//
+//    swap(A[i], L)
         @Override
         public T pop() {
-            throw new UnsupportedOperationException("Not implemented yet");
+            if (size == 0) {
+                throw new NoSuchElementException("There's nobody here but us chickens!");
+            }
+            T result = heap[0];
+            heap[0] = heap[size - 1];
+            size--;
+            int i = 0;
+            while(i < size) {
+                int childFirst = (2 * i + 1);
+                int childSecond = (2 * i + 2);
+                int larger = 0;
+                if ((childFirst < size && childSecond < size && heap[childFirst] != null &&  heap[childSecond] != null )
+                        && heap[childFirst].compareTo(heap[childSecond]) < 0) {
+                    larger = childSecond;
+                } else if(((childFirst < size && childSecond < size && heap[childFirst] != null &&  heap[childSecond] != null )
+                        && heap[childFirst].compareTo(heap[childSecond]) > 0)
+                        || childSecond >= size) {
+                    larger = childFirst;
+                }
+                if( heap[i].compareTo(heap[larger]) < 0) {
+                    T temp = heap[larger];
+                    heap[larger] = heap[i];
+                    heap[i] = temp;
+                    i = larger;
+                }
+            }
+            return result;
         }
 
         @Override
@@ -87,7 +146,7 @@ public class Exercises7 {
 
         /**
          * Wstawia nowy element do drzewa BST.
-         *
+         * <p>
          * Jeśli element o takiej samej wartości już znajduje się w drzewie,
          * zostaje zastąpiony przez nowy element.
          */
@@ -95,22 +154,22 @@ public class Exercises7 {
 
         /**
          * Zwraca true, jeśli podany element znajduje się w drzewie.
-         *
+         * <p>
          * Uwaga: elementy należy porównywać poprzez .compareTo(..), nie .equals(..).
          */
         boolean contains(T element);
 
         /**
          * Usuwa element z drzewa BST (jeśli taki istnieje).
-         *
+         * <p>
          * Podpowiedź: należy rozpatrzyć trzy przypadki:
          * - usuwany węzeł nie ma dzieci
          * - usuwany węzeł ma jedno dziecko
          * - usuwany węzeł ma dwoje dzieci
-         *
+         * <p>
          * Uwaga: zauważ, że nasza implementacja Node nie przechowuje referencji na rodzica (parent),
          * więc nie każde rozwiazanie znalezione w Internecie się dla nas nadaje.
-         *
+         * <p>
          * Podpowiedź: ta stronka może się tutaj bardziej przydać niż Wikipedia:
          * https://www.geeksforgeeks.org/binary-search-tree-set-2-delete/
          */

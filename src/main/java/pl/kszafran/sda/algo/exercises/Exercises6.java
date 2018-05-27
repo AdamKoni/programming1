@@ -189,25 +189,26 @@ public class Exercises6 {
      * @throws IllegalArgumentException jeśli któraś z linijek zawiera nieprawidłową ilość wartości
      */
     public SdaTree<String> buildTree1(String input) {
-        String[][] array = Arrays.stream(input.split("\\n"))
-                .map(e->e.split("\\s"))
-                .toArray(String[][]::new);
-        check(array)
-        buildTreeExample(array, 0, 0);
+//        String[][] array = Arrays.stream(input.split("\\n"))
+//                .map(e->e.split("\\s"))
+//                .toArray(String[][]::new);
+//        check(array)
+//        buildTreeExample(array, 0, 0);
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    private void check(String[][] array) {
-        for (int i = 0; i < array.length; i++) {
-            int index = 1 << i;
-            if (array.length < index) {
-                throw new IllegalArgumentException("Not enough tree elements");
-            }
-        }
-    }
+//    private void check(String[][] array) {
+//        for (int i = 0; i < array.length; i++) {
+//            int index = 1 << i;
+//            if (array.length < index) {
+//                throw new IllegalArgumentException("Not enough tree elements");
+//            }
+//        }
+//    }
 
-    private void buildTreeExample(String[][] array, int a, int b) {
-
-    }
+//    private void buildTreeExample(String[][] array, int a, int b) {
+//
+//    }
 
     ////////////////////////////////////////////
     //                                        //
